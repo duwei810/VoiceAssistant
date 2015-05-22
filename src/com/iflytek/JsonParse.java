@@ -186,7 +186,7 @@ public class JsonParse {
 					quality=mid.getString("quality");
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e.printStackTrace();  
 				}
 				result="空气质量："+api+" "+quality;
 			}
@@ -229,5 +229,5 @@ public class JsonParse {
 			}
 		}
 	}
-//git test
+
 }
