@@ -23,6 +23,10 @@ public class JsonParse {
 	private String wind=null;
 	private String weather=null;
 	private String tempRange=null;
+	private String api=null;
+	private String quality=null;
+	private String keywords=null;
+	private String channel=null;
 	
 	private int rc;
 	private JSONObject answer=null;
@@ -121,7 +125,7 @@ public class JsonParse {
 				}
 				
 			}
-			else if(service.equals("cookbook")||service.equals("gift")||service.equals("flower")||service.equals("shortRent")){
+			else if(service.equals("cookbook")||service.equals("gift")||service.equals("flower")||service.equals("shortRent")||service.equals("tv")){
 				try {
 					webPage=obj.getJSONObject("webPage");
 					url=webPage.getString("url");
@@ -172,6 +176,43 @@ public class JsonParse {
 					e.printStackTrace();
 				}
 				result="日期："+date+"\r\n空气质量："+airQuality+"\r\n风向："+wind+"\r\n天气："+weather+"\r\n温度："+tempRange;
+			}
+			else if(service.equals("pm25")){
+				try {
+					data=obj.getJSONObject("data");
+					resultArray=data.getJSONArray("result");
+					JSONObject mid=resultArray.getJSONObject(0);
+					api=mid.getString("api");
+					quality=mid.getString("quality");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				result="空气质量："+api+" "+quality;
+			}
+			else if(service.equals("websearch")){
+				try {
+					semantic=obj.getJSONObject("semantic");
+					slots=semantic.getJSONObject("slots");
+					channel=slots.getString("channel");
+					keywords=slots.getString("keywords");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(channel.equals("taobao")){
+					url="rundll32 url.dll,FileProtocolHandler http://s.taobao.com/search?q="+keywords;
+				}
+				else{
+					url="rundll32 url.dll,FileProtocolHandler http://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&tn=baidu&wd="+keywords;
+				}
+				try {
+					Runtime.getRuntime().exec(url);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				result="正在为您打开网页";
 			}
 			else {
 				try {
