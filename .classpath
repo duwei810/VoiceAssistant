@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/json-jena-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/Msc.jar"/>
+	<classpathentry kind="lib" path="G:/java-EE/workspace/VoiceAssistant/lib/junit-4.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

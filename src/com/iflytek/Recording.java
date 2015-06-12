@@ -52,6 +52,11 @@ public class Recording<MotionEvent> extends JFrame implements ActionListener{
         jp2 = new JPanel();  
         jp3 = new JPanel();  
         jTextArea = new JTextArea(9,23); 
+        JScrollPane scroll = new JScrollPane(jTextArea);
+        scroll.setHorizontalScrollBarPolicy( 
+        		JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
+        		scroll.setVerticalScrollBarPolicy( 
+        		JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); 
         //定义字体  
         //Font myFont = new Font("华文新魏",Font.BOLD,30);  
         //jl1 = new JLabel("录音机功能的实现");  
@@ -65,38 +70,33 @@ public class Recording<MotionEvent> extends JFrame implements ActionListener{
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         jp1.add(sp);*/
-        captureBtn = new JButton("开始录音");  
+        captureBtn = new JButton("按住说话");  
         //对开始录音按钮进行注册监听  
+        /*
         captureBtn.addActionListener(this);  
         captureBtn.setActionCommand("captureBtn");  
-        //对停止录音进行注册监听  
-        stopBtn = new JButton("停止录音");  
-        stopBtn.addActionListener(this);  
-        stopBtn.setActionCommand("stopBtn");  
-        //对播放录音进行注册监听  
-        playBtn = new JButton("播放录音");  
-        playBtn.addActionListener(this);  
-        playBtn.setActionCommand("playBtn");  
-        //对保存录音进行注册监听  
-        saveBtn = new JButton("保存录音");  
-        saveBtn.addActionListener(this);  
-        saveBtn.setActionCommand("saveBtn");  
+        */
+        captureBtn.addMouseListener(new MouseAdapter() {  
+            @Override  
+            public void mousePressed(MouseEvent e) {    
+                capture();  
+            }  
           
-          
+            @Override  
+            public void mouseReleased(MouseEvent e) {  
+                stop();  
+                save();  
+                Recognition re = new Recognition(jTextArea);     //保存录音成.pcm格式，开始识别
+            }  
+        });  
         this.add(jp1,BorderLayout.NORTH);  
         this.add(jp2,BorderLayout.CENTER);  
         this.add(jp3,BorderLayout.SOUTH);  
         jp3.setLayout(null);  
         jp3.setLayout(new GridLayout(1, 4,10,10));  
-        jp3.add(captureBtn);  
-        jp3.add(stopBtn);  
-        jp3.add(playBtn);  
-        jp3.add(saveBtn);  
+        jp3.add(captureBtn); 
         //设置按钮的属性  
         captureBtn.setEnabled(true);  
-        stopBtn.setEnabled(false);  
-        playBtn.setEnabled(false);  
-        saveBtn.setEnabled(false);  
         //设置窗口的属性  
         this.setSize(400,300);  
         this.setTitle("语音助手");  
@@ -104,40 +104,10 @@ public class Recording<MotionEvent> extends JFrame implements ActionListener{
         this.setLocationRelativeTo(null);  
         this.setVisible(true);  
     }  
-	
 	public void actionPerformed(ActionEvent e) {  
           
-        if(e.getActionCommand().equals("captureBtn"))  
-        {  
-            //点击开始录音按钮后的动作  
-            //停止按钮可以启动  
-            captureBtn.setEnabled(false);  
-            stopBtn.setEnabled(true);  
-            playBtn.setEnabled(false);  
-            saveBtn.setEnabled(false);  
-              
-            //调用录音的方法  
-            capture();  
-        }else if (e.getActionCommand().equals("stopBtn")) {  
-            //点击停止录音按钮的动作  
-            captureBtn.setEnabled(true);  
-            stopBtn.setEnabled(false);  
-            playBtn.setEnabled(true);  
-            saveBtn.setEnabled(true);  
-            //调用停止录音的方法       
-            stop();  
-              
-        }else if(e.getActionCommand().equals("playBtn"))  
-        {  
-            //调用播放录音的方法  
-            play();  
-        }else if(e.getActionCommand().equals("saveBtn"))  
-        {  
-            //调用保存录音的方法  
-            save();  
-            Recognition re = new Recognition(jTextArea);     //保存录音成.pcm格式，开始识别
-        }  
     }  
+
     //开始录音  
     public void capture()  
     {  
